@@ -3,13 +3,14 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using RestWithASPNETUdemy.Model;
+using RestWithASPNETUdemy.Repository.Generic;
 
 namespace RestWithASPNETUdemy.Business.Implementattions
 {
     public class BookBusinessImpl : IBookBusiness
     {
-        private readonly IBookBusiness _repository;
-        public BookBusinessImpl(IBookBusiness repository)
+        private IRepository<Book> _repository;
+        public BookBusinessImpl(IRepository<Book> repository)
         {
             _repository = repository;
         }
