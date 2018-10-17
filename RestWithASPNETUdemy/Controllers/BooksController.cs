@@ -1,6 +1,8 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using RestWithASPNETUdemy.Model;
 using RestWithASPNETUdemy.Business;
+using RestWithASPNETUdemy.Data.VO;
+
 namespace RestWithASPNETUdemy.Controllers
 {
 
@@ -14,43 +16,49 @@ namespace RestWithASPNETUdemy.Controllers
     public class BooksController : Controller
     {
         //Declaração do serviço usado
-        private IPersonBusiness _personBusiness;
+        private IBookBusiness _bookBusiness;
 
         /* Injeção de uma instancia de IBooksRepository ao criar
         uma instancia de PersonController */
-        public BooksController()
+        public BooksController(IBookBusiness bookBusiness)
         {
-            
+            _bookBusiness = bookBusiness;            
         }
 
         [HttpGet]
         public IActionResult Get()
         {
-            return Ok();
+            return Ok(_bookBusiness.FindAll());
         }
 
         [HttpGet("{id}")]
         public IActionResult Get(long id)
         {
-            
-            return Ok();
+            var book = _bookBusiness.FindById(id);
+            if (book == null) return NotFound();
+            return Ok(book);
         }
 
         [HttpPost]
-        public IActionResult Post([FromBody]Book book)
+        public IActionResult Post([FromBody]BookVO book)
         {
-            return 0; 
+            if (book == null) return BadRequest();
+            return new ObjectResult(_bookBusiness.Create(book)); 
         }
 
         [HttpPut]
-        public IActionResult Put([FromBody]Book book)
+        public IActionResult Put([FromBody]BookVO book)
         {
-            return 0;
+            if (book == null) return BadRequest();
+            var updateBook = _bookBusiness.Update(book);
+            if (updateBook == null) return BadRequest();
+            return new ObjectResult(updateBook);
         }
 
         [HttpDelete("{id}")]
         public IActionResult Delete(int id)
         {
+            _bookBusiness.Delete(id);
             return NoContent();
         }
     }

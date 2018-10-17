@@ -4,9 +4,9 @@ namespace RestWithASPNETUdemy.Model.Base
 {
     //Contrato entre Atributos
     //e a estrutura da tabela
-    [DataContract]
+    //[DataContract]
     public class BaseEntity
     {
-        public long Id { get; set; }
+        public long? Id { get; set; }
     }
 }
