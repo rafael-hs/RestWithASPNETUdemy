@@ -13,6 +13,10 @@ using RestWithASPNETUdemy.Business;
 using RestWithASPNETUdemy.Business.Implementattions;
 using RestWithASPNETUdemy.Repository.Generic;
 using Microsoft.Net.Http.Headers;
+using Tapioca.HATEOAS;
+using RestWithASPNETUdemy.HyperMedia;
+using Swashbuckle.AspNetCore.Swagger;
+using Microsoft.AspNetCore.Rewrite;
 
 namespace RestWithASPNETUdemy
 {
@@ -67,7 +71,22 @@ namespace RestWithASPNETUdemy
             })
             .AddXmlSerializerFormatters();
 
+            var filterOptions = new HyperMediaFilterOptions();
+            filterOptions.ObjectContentResponseEnricherList.Add(new PersonEnricher());
+            services.AddSingleton(filterOptions);
+
 			services.AddApiVersioning(option => option.ReportApiVersions = true);
+
+            services.AddSwaggerGen(c => 
+            {
+                c.SwaggerDoc("v1", 
+                new Info
+                {
+                    Title = "RESTful API With ASP.NET Core 2.0",
+                    Version = "v1"
+                });
+
+            });
 
             //Dependency Injection
             services.AddScoped<IPersonBusiness, PersonBusinessImpl>();
@@ -84,7 +103,22 @@ namespace RestWithASPNETUdemy
             loggerFactory.AddConsole(_configuration.GetSection("Logging"));
             loggerFactory.AddDebug();
 
-            app.UseMvc();
+            app.UseSwagger();
+            app.UseSwaggerUI(c => 
+            {
+                c.SwaggerEndpoint("/swagger/v1/swagger.json","My API V1");
+            });
+
+            var option = new RewriteOptions();
+            option.AddRedirect("^$", "swagger");
+            app.UseRewriter(option);
+
+
+            app.UseMvc(routes => {
+            routes.MapRoute(
+                name: "DefaultApi",
+                template: "{controller=Values}/{id?}");
+            });
         }
     }
 }
