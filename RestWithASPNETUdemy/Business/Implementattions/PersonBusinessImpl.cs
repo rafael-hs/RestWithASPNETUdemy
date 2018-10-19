@@ -9,10 +9,10 @@ namespace RestWithASPNETUdemy.Business.Implementattions
     public class PersonBusinessImpl : IPersonBusiness
     {
 
-        private IRepository<Person> _repository;
+        private IPersonRepository _repository;
         private readonly PersonConverter _converter;
 
-        public PersonBusinessImpl(IRepository<Person> repository)
+        public PersonBusinessImpl(IPersonRepository repository)
         {
             _repository = repository;
             _converter = new PersonConverter();    
@@ -28,6 +28,11 @@ namespace RestWithASPNETUdemy.Business.Implementattions
         public PersonVO FindById(long id)
         {
             return _converter.Parse(_repository.FindById(id));
+        }
+
+        public List<PersonVO> FindByName(string firstName, string lastName)
+        {
+            return _converter.ParseList(_repository.FindByName(firstName, lastName));
         }
 
         public List<PersonVO> FindAll()

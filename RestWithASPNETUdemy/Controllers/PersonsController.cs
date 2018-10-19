@@ -1,5 +1,4 @@
-﻿using Google.Protobuf.WellKnownTypes;
-using Microsoft.AspNetCore.Authorization;
+﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using RestWithASPNETUdemy.Business;
 using RestWithASPNETUdemy.VO;
@@ -40,6 +39,20 @@ namespace RestWithASPNETUdemy.Controllers
         public IActionResult Get()
         {
             return Ok(_personBusiness.FindAll());
+        }
+
+        //Mapeia as requisições GET para http://localhost:{porta}/api/persons/v1/
+        //Get sem parâmetros para o FindAll --> Busca Todos
+        [HttpGet("find-by-name")]
+        [ProducesResponseType((200), Type = typeof(List<PersonVO>))]
+        [ProducesResponseType(204)]
+        [ProducesResponseType(400)]
+        [ProducesResponseType(401)]
+        [TypeFilter(typeof(HyperMediaFilter))]
+        [Authorize("bearer")]
+        public IActionResult FindByName([FromQuery] string firstName, [FromQuery] string lastName)
+        {
+            return new OkObjectResult(_personBusiness.FindByName(firstName,lastName));
         }
 
         //Mapeia as requisições GET para http://localhost:{porta}/api/persons/v1/{id}
@@ -88,6 +101,21 @@ namespace RestWithASPNETUdemy.Controllers
             return new ObjectResult(updatedPerson);
         }
 
+        //Mapeia as requisições PATCH para http://localhost:{porta}/api/persons/v1/
+        //O [FromBody] consome o Objeto JSON enviado no corpo da requisição
+        [HttpPatch]
+        [ProducesResponseType((202), Type = typeof(PersonVO))]
+        [ProducesResponseType(400)]
+        [ProducesResponseType(401)]
+        [TypeFilter(typeof(HyperMediaFilter))]
+        [Authorize("bearer")]
+        public IActionResult patch([FromBody]PersonVO person)
+        {
+            if (person == null) return BadRequest();
+            var updatedPerson = _personBusiness.Update(person);
+            if (updatedPerson == null) return BadRequest();
+            return new ObjectResult(updatedPerson);
+        }
 
         //Mapeia as requisições DELETE para http://localhost:{porta}/api/persons/v1/{id}
         //recebendo um ID como no Path da requisição

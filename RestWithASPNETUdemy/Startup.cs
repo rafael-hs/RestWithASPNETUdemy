@@ -143,6 +143,7 @@ namespace RestWithASPNETUdemy
             services.AddScoped<ILoginBusiness, LoginBusinessImpl>();
 
             services.AddScoped<ILoginRepository, LoginRepositoryImpl>();
+            services.AddScoped<IPersonRepository, PersonRepositoryImpl>();
 
             //Dependency Injection Generict repository
             services.AddScoped(typeof(IRepository<>), typeof(GenericRepository<>));
