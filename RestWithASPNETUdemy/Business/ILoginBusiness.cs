@@ -1,10 +1,11 @@
 ﻿using RestWithASPNETUdemy.Model;
+using RestWithASPNETUdemy.VO;
 using System;
 
 namespace RestWithASPNETUdemy.Business
 {
     public interface ILoginBusiness
     {
-        Object FindByLogin(User user);
+        Object FindByLogin(UserVO user);
     }
 }

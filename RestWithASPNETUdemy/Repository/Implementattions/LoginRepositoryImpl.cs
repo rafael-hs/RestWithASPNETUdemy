@@ -1,14 +1,15 @@
 ﻿using RestWithASPNETUdemy.Model;
 using RestWithASPNETUdemy.Model.Context;
+using RestWithASPNETUdemy.VO;
 using System.Linq;
 
 namespace RestWithASPNETUdemy.Business.Implementattions
 {
-    public class UserRepositoryImpl : IUserRepository
+    public class LoginRepositoryImpl : ILoginRepository
     {
         private readonly MySQLContext _context;
 
-        public UserRepositoryImpl(MySQLContext context)
+        public LoginRepositoryImpl(MySQLContext context)
         {
             _context = context;
         }

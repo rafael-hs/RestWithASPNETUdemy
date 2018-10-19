@@ -1,4 +1,5 @@
 ﻿using Google.Protobuf.WellKnownTypes;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using RestWithASPNETUdemy.Business;
 using RestWithASPNETUdemy.VO;
@@ -35,6 +36,7 @@ namespace RestWithASPNETUdemy.Controllers
         [ProducesResponseType(400)]
         [ProducesResponseType(401)]
         [TypeFilter(typeof(HyperMediaFilter))]
+        [Authorize("bearer")]
         public IActionResult Get()
         {
             return Ok(_personBusiness.FindAll());
@@ -49,6 +51,7 @@ namespace RestWithASPNETUdemy.Controllers
         [ProducesResponseType(400)]
         [ProducesResponseType(401)]
         [TypeFilter(typeof(HyperMediaFilter))]
+        [Authorize("bearer")]
         public IActionResult Get(long id)
         {
             var person = _personBusiness.FindById(id);
@@ -62,6 +65,7 @@ namespace RestWithASPNETUdemy.Controllers
         [ProducesResponseType((201), Type = typeof(PersonVO))]
         [ProducesResponseType(400)]
         [TypeFilter(typeof(HyperMediaFilter))]
+        [Authorize("bearer")]
         public IActionResult Post([FromBody]PersonVO person)
         {
             if (person == null) return BadRequest();
@@ -75,6 +79,7 @@ namespace RestWithASPNETUdemy.Controllers
         [ProducesResponseType(400)]
         [ProducesResponseType(401)]
         [TypeFilter(typeof(HyperMediaFilter))]
+        [Authorize("bearer")]
         public IActionResult Put([FromBody]PersonVO person)
         {
             if (person == null) return BadRequest();
@@ -91,6 +96,7 @@ namespace RestWithASPNETUdemy.Controllers
         [ProducesResponseType(400)]
         [ProducesResponseType(401)]
         [TypeFilter(typeof(HyperMediaFilter))]
+        [Authorize("bearer")]
         public IActionResult Delete(int id)
         {
             _personBusiness.Delete(id);

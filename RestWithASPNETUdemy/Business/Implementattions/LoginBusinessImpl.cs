@@ -1,13 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Security.Principal;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Versioning;
-using RestWithASPNETUdemy.Data.Converters;
 using RestWithASPNETUdemy.Model;
-using RestWithASPNETUdemy.Repository.Generic;
 using RestWithASPNETUdemy.Security.Configuration;
 using RestWithASPNETUdemy.VO;
 
@@ -16,24 +11,24 @@ namespace RestWithASPNETUdemy.Business.Implementattions
     public class LoginBusinessImpl : ILoginBusiness
     {
 
-        private IUserRepository _repository;
+        private ILoginRepository _repository;
         private SigningConfigurations _signingConfigurations;
         private TokenConfiguration _tokenConfiguration;
 
-        public LoginBusinessImpl(IUserRepository repository, SigningConfigurations signingConfigurations, TokenConfiguration tokenConfiguration)
+        public LoginBusinessImpl(ILoginRepository repository, SigningConfigurations signingConfigurations, TokenConfiguration tokenConfiguration)
         {
             _repository = repository;
             _signingConfigurations = signingConfigurations;
             _tokenConfiguration = tokenConfiguration;
         }
 
-        public object FindByLogin(User user)
+        public object FindByLogin(UserVO user)
         {
             bool credentialsIsValid = false;
             if (user != null && !string.IsNullOrWhiteSpace(user.Login))
             {
                 var baseUser = _repository.FindByLogin(user.Login);
-                credentialsIsValid = (baseUser != null && user.Login == baseUser.Login && user.AcessKey == baseUser.AcessKey); ;
+                credentialsIsValid = (baseUser != null && user.Login == baseUser.Login && user.AccessKey == baseUser.AccessKey); ;
             }
             if (credentialsIsValid)
             {

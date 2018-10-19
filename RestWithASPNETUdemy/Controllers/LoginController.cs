@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using RestWithASPNETUdemy.Business;
 using RestWithASPNETUdemy.Model;
+using RestWithASPNETUdemy.VO;
 
 namespace RestWithASPNETUdemy.Controllers
 {
@@ -19,7 +20,7 @@ namespace RestWithASPNETUdemy.Controllers
         }
         [AllowAnonymous]
         [HttpPost]
-        public IActionResult Post([FromBody]User user)
+        public object Post([FromBody]UserVO user)
         {
             if (user == null) return BadRequest();
             return _loginBusiness.FindByLogin(user);

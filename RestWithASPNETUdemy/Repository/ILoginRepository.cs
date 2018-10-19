@@ -1,9 +1,9 @@
 ﻿using RestWithASPNETUdemy.Model;
-using System.Collections.Generic;
+using RestWithASPNETUdemy.VO;
 
 namespace RestWithASPNETUdemy.Business
 {
-    public interface IUserRepository
+    public interface ILoginRepository
     {
        User FindByLogin(string login);
     }
