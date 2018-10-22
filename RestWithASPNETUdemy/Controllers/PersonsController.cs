@@ -41,8 +41,7 @@ namespace RestWithASPNETUdemy.Controllers
             return Ok(_personBusiness.FindAll());
         }
 
-        //Mapeia as requisições GET para http://localhost:{porta}/api/persons/v1/
-        //Get sem parâmetros para o FindAll --> Busca Todos
+        
         [HttpGet("find-by-name")]
         [ProducesResponseType((200), Type = typeof(List<PersonVO>))]
         [ProducesResponseType(204)]
@@ -53,6 +52,18 @@ namespace RestWithASPNETUdemy.Controllers
         public IActionResult FindByName([FromQuery] string firstName, [FromQuery] string lastName)
         {
             return new OkObjectResult(_personBusiness.FindByName(firstName,lastName));
+        }
+
+        [HttpGet("find-with-paged-search/{sortDirection}/{pageSize}/{page}")]
+        [ProducesResponseType((200), Type = typeof(List<PersonVO>))]
+        [ProducesResponseType(204)]
+        [ProducesResponseType(400)]
+        [ProducesResponseType(401)]
+        [TypeFilter(typeof(HyperMediaFilter))]
+        [Authorize("bearer")]
+        public IActionResult FindWithPagedSearch([FromQuery] string name, string sortDirection, int pageSize, int page)
+        {
+            return new OkObjectResult(_personBusiness.FindWithPagedSearch(name, sortDirection, pageSize, page));
         }
 
         //Mapeia as requisições GET para http://localhost:{porta}/api/persons/v1/{id}
